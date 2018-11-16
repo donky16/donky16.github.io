@@ -93,7 +93,7 @@
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-4.png">
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-5.png">
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-6.png">
-<meta property="og:updated_time" content="2018-11-16T14:08:59.656Z">
+<meta property="og:updated_time" content="2018-11-16T14:12:08.322Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HCTF 2018 Kzone Writeup">
 <meta name="twitter:description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。 kzone题目描述一个钓鱼网站，只有UserAgent是QQ才行，不然直接跳转到真正地QQ登陆界面 解题思路在www.zip中发现源码，发现后台管理界面查看源码，存在safe.php用于过滤1234567function waf($string)&amp;#123;">
@@ -447,10 +447,11 @@
 <li>strcmp(flag, test_string)</li>
 <li>flag between test_string and ‘~’</li>
 <li>flag &gt; test_string</li>
-<li>flag &lt; test_string   <h3 id="非预期解法"><a href="#非预期解法" class="headerlink" title="非预期解法"></a>非预期解法</h3>这个题目用了json_encode来编码cookie，并没有使用base编码，在php中如果json字符串中含有unicode字符，也会正常解码。导致了黑名单没有卵用，只要使用unicode就能bypass。</li>
+<li>flag &lt; test_string   </li>
 </ul>
 </li>
 </ul>
+<h3 id="非预期解法"><a href="#非预期解法" class="headerlink" title="非预期解法"></a>非预期解法</h3><p>这个题目用了json_encode来编码cookie，并没有使用base编码，在php中如果json字符串中含有unicode字符，也会正常解码。导致了黑名单没有卵用，只要使用unicode就能bypass。</p>
 
       
     </div>

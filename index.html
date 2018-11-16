@@ -443,10 +443,11 @@
 <li>strcmp(flag, test_string)</li>
 <li>flag between test_string and ‘~’</li>
 <li>flag &gt; test_string</li>
-<li>flag &lt; test_string   <h3 id="非预期解法"><a href="#非预期解法" class="headerlink" title="非预期解法"></a>非预期解法</h3>这个题目用了json_encode来编码cookie，并没有使用base编码，在php中如果json字符串中含有unicode字符，也会正常解码。导致了黑名单没有卵用，只要使用unicode就能bypass。</li>
+<li>flag &lt; test_string   </li>
 </ul>
 </li>
 </ul>
+<h3 id="非预期解法"><a href="#非预期解法" class="headerlink" title="非预期解法"></a>非预期解法</h3><p>这个题目用了json_encode来编码cookie，并没有使用base编码，在php中如果json字符串中含有unicode字符，也会正常解码。导致了黑名单没有卵用，只要使用unicode就能bypass。</p>
 
           
         

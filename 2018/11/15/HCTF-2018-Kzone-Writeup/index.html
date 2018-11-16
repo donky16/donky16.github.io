@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。 kzone题目描述一个钓鱼网站，只有UserAgent是QQ才行，不然直接跳转到真正地QQ登陆界面 解题思路在www.zip中发现源码，发现后台管理界面查看源码，存在safe.php用于过滤1234567function waf($string)&amp;#123;">
+<meta name="description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。">
 <meta name="keywords" content="sql注入,布尔盲注,MySQL大小写,unicode,json_decode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HCTF 2018 Kzone Writeup">
 <meta property="og:url" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/index.html">
 <meta property="og:site_name" content="donky16">
-<meta property="og:description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。 kzone题目描述一个钓鱼网站，只有UserAgent是QQ才行，不然直接跳转到真正地QQ登陆界面 解题思路在www.zip中发现源码，发现后台管理界面查看源码，存在safe.php用于过滤1234567function waf($string)&amp;#123;">
+<meta property="og:description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-1.png">
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-2.png">
@@ -93,10 +93,10 @@
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-4.png">
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-5.png">
 <meta property="og:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-6.png">
-<meta property="og:updated_time" content="2018-11-16T14:40:08.642Z">
+<meta property="og:updated_time" content="2018-11-16T16:22:13.949Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="HCTF 2018 Kzone Writeup">
-<meta name="twitter:description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。 kzone题目描述一个钓鱼网站，只有UserAgent是QQ才行，不然直接跳转到真正地QQ登陆界面 解题思路在www.zip中发现源码，发现后台管理界面查看源码，存在safe.php用于过滤1234567function waf($string)&amp;#123;">
+<meta name="twitter:description" content="一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。">
 <meta name="twitter:image" content="http://blog.donky.top/2018/11/15/HCTF-2018-Kzone-Writeup/3-1.png">
 
 
@@ -381,7 +381,7 @@
       
 
       
-        <p>一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。</p>
+        <p>一个钓鱼网站，带有后台的管理系统，复现环境的时候因为一个不经意的flag格式，搞了很长时间，关于MySQL大小写不敏感的注入方式，很有意思。<a id="more"></a></p>
 <h2 id="kzone"><a href="#kzone" class="headerlink" title="kzone"></a>kzone</h2><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>一个钓鱼网站，只有UserAgent是QQ才行，不然直接跳转到真正地QQ登陆界面<br><img src="/2018/11/15/HCTF-2018-Kzone-Writeup/3-1.png" alt=""></p>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>在<a href="http://www.zip中发现源码，发现后台管理界面" target="_blank" rel="noopener">www.zip中发现源码，发现后台管理界面</a><br><img src="/2018/11/15/HCTF-2018-Kzone-Writeup/3-2.png" alt=""><br>查看源码，存在safe.php用于过滤<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">waf</span><span class="params">($string)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $blacklist = <span class="string">'/union|ascii|mid|left|greatest|least|substr|sleep|or|benchmark|like|regexp|if|=|-|&lt;|&gt;|\#|\s/i'</span>;</span><br><span class="line">    <span class="keyword">return</span> preg_replace_callback($blacklist, <span class="function"><span class="keyword">function</span> <span class="params">($match)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'@'</span> . $match[<span class="number">0</span>] . <span class="string">'@'</span>;</span><br><span class="line">    &#125;, $string);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p><code>$_GET</code>，<code>$_POST</code>，<code>$_COOKIE</code>都经过了waf，虽然源码中含有默认密码，但是登陆不了，很明显密码被改变了。查看主要登陆的代码，在member.php中是验证cookie的。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$islogin = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>($_COOKIE[<span class="string">"islogin"</span>])) &#123;</span><br><span class="line">    <span class="keyword">if</span> ($_COOKIE[<span class="string">"login_data"</span>]) &#123;</span><br><span class="line">        $login_data = json_decode($_COOKIE[<span class="string">'login_data'</span>], <span class="keyword">true</span>);</span><br><span class="line">        $admin_user = $login_data[<span class="string">'admin_user'</span>];</span><br><span class="line">        $udata = $DB-&gt;get_row(<span class="string">"SELECT * FROM fish_admin WHERE username='$admin_user' limit 1"</span>);</span><br><span class="line">        <span class="keyword">if</span> ($udata[<span class="string">'username'</span>] == <span class="string">''</span>) &#123;</span><br><span class="line">            setcookie(<span class="string">"islogin"</span>, <span class="string">""</span>, time() - <span class="number">604800</span>);</span><br><span class="line">            setcookie(<span class="string">"login_data"</span>, <span class="string">""</span>, time() - <span class="number">604800</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        $admin_pass = sha1($udata[<span class="string">'password'</span>] . LOGIN_KEY);</span><br><span class="line">        <span class="keyword">if</span> ($admin_pass == $login_data[<span class="string">'admin_pass'</span>]) &#123;</span><br><span class="line">            $islogin = <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            setcookie(<span class="string">"islogin"</span>, <span class="string">""</span>, time() - <span class="number">604800</span>);</span><br><span class="line">            setcookie(<span class="string">"login_data"</span>, <span class="string">""</span>, time() - <span class="number">604800</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>

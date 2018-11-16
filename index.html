@@ -395,7 +395,7 @@
 </ul>
 </li>
 </ol>
-<p>当我开开心心跑exp的时候却发现，数据库名字成功了，而找flag的时候出了问题。exp2<br><img src="/2018/11/15/HCTF-2018-Kzone-Writeup/3-5.png" alt=""><br>到了<code>z</code>竟然成功了，此处应该是<code>_</code>，这说明<code>ascii(&#39;_&#39;)&gt;ascii(&#39;z&#39;)</code>了，就很苦恼。exp1跑的结果是<code>hctf{hctf_2018_kzone_author_li4n0}</code>。肯定就是大小写的问题了。。。</p>
+<p>当我开开心心跑exp的时候却发现，数据库名字成功了，而找flag的时候出了问题。exp2<br><img src="/2018/11/15/HCTF-2018-Kzone-Writeup/3-5.png" alt=""><br>到了<code>z</code>竟然成功了，此处应该是<code>_</code>，这说明<code>ascii(&#39;_&#39;)&gt;ascii(&#39;z&#39;)</code>了，就很苦恼。exp1跑的结果是<code>hctf{hctf_2018_kzone_author_li4n0}</code>。肯定就是大小写的问题了。。。   </p>
 <h4 id="MySQL大小写敏感问题"><a href="#MySQL大小写敏感问题" class="headerlink" title="MySQL大小写敏感问题"></a>MySQL大小写敏感问题</h4><p>参考：<a href="https://dev.mysql.com/doc/refman/5.7/en/identifier-case-sensitivity.html" target="_blank" rel="noopener">https://dev.mysql.com/doc/refman/5.7/en/</a><br><img src="/2018/11/15/HCTF-2018-Kzone-Writeup/3-6.png" alt=""></p>
 <ul>
 <li><p>mysql大小写敏感配置相关的两个参数<br><code>lower_case_file_system</code>：表示当前系统文件是否大小写敏感，只读参数，无法修改。ON表示大小写不敏感 OFF表示大小写敏感<br><code>lower_case_table_names</code>：表示表名是否大小写敏感，可以修改在开启服务时</p>
@@ -414,11 +414,14 @@
 </ul>
 </li>
 <li>字段属性设置<ul>
-<li>建立表的时候，在字段名后加<code>BINARY</code>，就会覆盖<code>collate</code>，从而区分大小写<h4 id="大小写不敏感的注入"><a href="#大小写不敏感的注入" class="headerlink" title="大小写不敏感的注入"></a>大小写不敏感的注入</h4>当然在sql注入的过程中如果数据是区分大小写的，肯定是非常省事的。接下来主要看不区分大小写的注入。    </li>
+<li>建立表的时候，在字段名后加<code>BINARY</code>，就会覆盖<code>collate</code>，从而区分大小写   </li>
 </ul>
 </li>
 </ul>
 </li>
+</ul>
+<h4 id="大小写不敏感的注入"><a href="#大小写不敏感的注入" class="headerlink" title="大小写不敏感的注入"></a>大小写不敏感的注入</h4><p>当然在sql注入的过程中如果数据是区分大小写的，肯定是非常省事的。接下来主要看不区分大小写的注入。    </p>
+<ul>
 <li>表名的敏感性<br>  因为默认表名大小写敏感，所以我们在获取<code>GROUP_CONCAT(&#39;table_name&#39;)</code>时是没有问题的，如果Unix设置了<code>lower_case_table_names=1</code>或者是Windows，这样我们爆出表名都是小写的(<code>string.ascii_letters中小写字母在前</code>)，这样使用exp1(<code>in</code>)的方式是没有影响的，而<code>between and</code>变会受到影响</li>
 <li>数据的敏感性<br>  当插入的数据是不区分大小写的，而且存在大写字母，我们怎么还原它呢？  <ul>
 <li>BINARY(expr)</li>

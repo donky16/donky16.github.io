@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans,en,default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="HTTPRFC,WAF,Base64,RFC," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="文章首发于奇安信攻防社区，链接https://forum.butian.net/share/639">
+<meta name="keywords" content="HTTPRFC,WAF,Base64,RFC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从RFC看如何使用Base64编码绕过WAF">
+<meta property="og:url" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/index.html">
+<meta property="og:site_name" content="donky16">
+<meta property="og:description" content="文章首发于奇安信攻防社区，链接https://forum.butian.net/share/639">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210903152850364.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210908164317545.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210903151921886.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210908170519361.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210903155051530.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210908170904392.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210903155905246.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210908180848539.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210903161030946.png">
+<meta property="og:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210908181336136.png">
+<meta property="og:updated_time" content="2022-03-28T11:56:28.681Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从RFC看如何使用Base64编码绕过WAF">
+<meta name="twitter:description" content="文章首发于奇安信攻防社区，链接https://forum.butian.net/share/639">
+<meta name="twitter:image" content="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/image-20210903152850364.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/"/>
+
+
+
+
+
+  <title>从RFC看如何使用Base64编码绕过WAF | donky16</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">donky16</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://donky.cn/2021/10/28/从RFC看如何使用Base64编码绕过WAF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="donky16">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="donky16">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从RFC看如何使用Base64编码绕过WAF</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-28T19:53:35+08:00">
+                2021-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/协议安全/" itemprop="url" rel="index">
+                    <span itemprop="name">协议安全</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/协议安全/WAF/" itemprop="url" rel="index">
+                    <span itemprop="name">WAF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>文章首发于奇安信攻防社区，链接<a href="https://forum.butian.net/share/639" target="_blank" rel="noopener">https://forum.butian.net/share/639</a><a id="more"></a></p>
+<p>本文将查看RFC4648对于base64编码的规范，并选取多种base64解码器分析其在实现上的不规范性，并如何通过这种不规范来绕过WAF。</p>
+<h2 id="Base64编码"><a href="#Base64编码" class="headerlink" title="Base64编码"></a>Base64编码</h2><p>简单来说Base64编码，就是简单的3换4，将三个char共24bit，分成4个部分，每个部分6个bit，所以总共可以标识0-63共64个数，然后重新进行编码，由于当存在不足3个char时，是无法组成24个bit的，所以最后会使用<code>=</code>作为padding进行补充，标准的base64编码字母标为</p>
+<p><img src="image-20210903152850364.png" alt="image-20210903152850364"></p>
+<h2 id="WAF拦截机制"><a href="#WAF拦截机制" class="headerlink" title="WAF拦截机制"></a>WAF拦截机制</h2><p>由于目前大部分waf还是基于规则进行拦截的，其中一部分waf没有实现对请求数据的处理，比如遇到base64编码的数据，并不会解码，而是直接拿base64编码的数据和规则进行匹配。如果waf实现了对base64解码的处理，那么遇到base64编码直接进行解码，就可以拿解码后的数据与规则进行匹配，这样能够节省规则的编写。这里为了能更好理解，简单使用waf拦截蚁剑Webshell的base64-php版本请求进行举例</p>
+<p><img src="image-20210908164317545.png" alt="image-20210908164317545"></p>
+<p>首先拦截这种请求，如果规则中有base64_decode函数等关键字，是肯定能够拦截的。由于本文主要探讨如何绕过base64编码，所以这里主要看如何让waf拦截这个经过base64编码的参数。解码下这个参数值</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@ini_set(<span class="string">"display_errors"</span>, <span class="string">"0"</span>);@set_time_limit(<span class="number">0</span>);$opdir=@ini_get(<span class="string">"open_basedir"</span>);<span class="keyword">if</span>($opdir) &#123;$oparr=preg_split(<span class="string">"/\\\\\\\\|\\//"</span>,$opdir);$ocwd=dirname($_SERVER[<span class="string">"SCRIPT_FILENAME"</span>]);$tmdir=<span class="string">".d47b6980f578"</span>;@mkdir($tmdir);@chdir($tmdir);@ini_set(<span class="string">"open_basedir"</span>,<span class="string">".."</span>);<span class="keyword">for</span>($i=<span class="number">0</span>;$i&lt;sizeof($oparr);$i++)&#123;@chdir(<span class="string">".."</span>);&#125;@ini_set(<span class="string">"open_basedir"</span>,<span class="string">"/"</span>);@rmdir($ocwd.<span class="string">"/"</span>.$tmdir);&#125;;<span class="function"><span class="keyword">function</span> <span class="title">asenc</span><span class="params">($out)</span></span>&#123;<span class="keyword">return</span> @base64_encode($out);&#125;;<span class="function"><span class="keyword">function</span> <span class="title">asoutput</span><span class="params">()</span></span>&#123;$output=ob_get_contents();ob_end_clean();<span class="keyword">echo</span> <span class="string">"25606f"</span>.<span class="string">"0a6023"</span>;<span class="keyword">echo</span> @asenc($output);<span class="keyword">echo</span> <span class="string">"d00298"</span>.<span class="string">"01067d"</span>;&#125;ob_start();<span class="keyword">try</span>&#123;$D=dirname($_SERVER[<span class="string">"SCRIPT_FILENAME"</span>]);<span class="keyword">if</span>($D==<span class="string">""</span>)$D=dirname($_SERVER[<span class="string">"PATH_TRANSLATED"</span>]);$R=<span class="string">"&#123;$D&#125;\t"</span>;<span class="keyword">if</span>(substr($D,<span class="number">0</span>,<span class="number">1</span>)!=<span class="string">"/"</span>)&#123;<span class="keyword">foreach</span>(range(<span class="string">"C"</span>,<span class="string">"Z"</span>)<span class="keyword">as</span> $L)<span class="keyword">if</span>(is_dir(<span class="string">"&#123;$L&#125;:"</span>))$R.=<span class="string">"&#123;$L&#125;:"</span>;&#125;<span class="keyword">else</span>&#123;$R.=<span class="string">"/"</span>;&#125;$R.=<span class="string">"\t"</span>;$u=(function_exists(<span class="string">"posix_getegid"</span>))?@posix_getpwuid(@posix_geteuid()):<span class="string">""</span>;$s=($u)?$u[<span class="string">"name"</span>]:@get_current_user();$R.=php_uname();$R.=<span class="string">"\t&#123;$s&#125;"</span>;<span class="keyword">echo</span> $R;;&#125;<span class="keyword">catch</span>(<span class="keyword">Exception</span> $e)&#123;<span class="keyword">echo</span> <span class="string">"ERROR://"</span>.$e-&gt;getMessage();&#125;;asoutput();<span class="keyword">die</span>();</span><br></pre></td></tr></table></figure>
+<p>对于不支持base64编码的waf来说，可以直接选取<code>@ini_set(</code>的base64编码形式<code>QGluaV9zZXQo</code>作为关键字拦截，这样这种形式的webshell请求将会被拦截。</p>
+<p>对于支持base64编码的waf来说，可以直接使用<code>ini_set(</code>作为关键字拦截，这样当遇到base64编码数据，解码之后就会命中<code>ini_set(</code>规则。</p>
+<h2 id="解码器"><a href="#解码器" class="headerlink" title="解码器"></a>解码器</h2><p>Base64解码时，就是将4个base64字母，共24bit，分为3个部分，每个部分8个bit，用来代表一个字符。但是当编码后的数据不是标准的规范格式解码器会如何工作呢？</p>
+<p>为了能够更全面的测试各种解码器的解析方式，这里选取了5种解码器</p>
+<ol>
+<li>php: base64_decode()</li>
+<li>python: base64.b64decode()</li>
+<li>go: encoding/base64.StdEncoding.DecodeString()</li>
+<li>java1: java.util.Base64.getDecoder().decode()</li>
+<li>java2: sun.misc.BASE64Decoder().decode(）</li>
+</ol>
+<h2 id="解析方式"><a href="#解析方式" class="headerlink" title="解析方式"></a>解析方式</h2><p>根据RFC4648中的规范，总结出5个维度来进行测试，我们用简单的字符串<code>test</code>，其base64编码后的数据为<code>dGVzdA==</code>作为基础数据。</p>
+<h3 id="换行符"><a href="#换行符" class="headerlink" title="换行符"></a>换行符</h3><p><img src="image-20210903151921886.png" alt="image-20210903151921886"></p>
+<p>在base64编码中的数据中，是不允许含有换行符的，除非根据本规范具体规范在特定数量字符后面添加换行符。其实这种场景时常见的，如果base64编码数据过长，可以直接一行表示，有时可能会将过长的数据进行换行了。</p>
+<p>测试数据<code>dG\nVzdA==</code>，结果为</p>
+<ol>
+<li>php: test</li>
+<li>python: test</li>
+<li>go: test</li>
+<li>java1: 报错</li>
+<li>java2: 非test</li>
+</ol>
+<p>接着使用<code>dG\n\r\tVzdA==</code>测试可以解码的</p>
+<ol>
+<li>php: test</li>
+<li>python: test</li>
+<li>go: 报错</li>
+</ol>
+<p>接着测试<code>dG\n\rVzdA==</code>，发现go可以解码正常</p>
+<p>这里特殊的就是go，java两种都不支持，php/python全支持，而go只支持<code>\r\n</code>，那么如何用这种特性来绕过waf呢？</p>
+<p>用上面webshell请求来测试，由于使用的php版本，发送以下数据</p>
+<p><img src="image-20210908170519361.png" alt="image-20210908170519361"></p>
+<p>在base64数据中添加<code>\n</code>，当然这个可以在随意位置添加，对于不支持base64解码的waf，自然无法匹配中<code>QGluaV9zZXQo</code>，对于支持的，如果waf像java1那种解析方式，就会解析失败，自然无法匹配中规则。</p>
+<h3 id="非字母表字符（除-r-n）"><a href="#非字母表字符（除-r-n）" class="headerlink" title="非字母表字符（除\r\n）"></a>非字母表字符（除\r\n）</h3><p><img src="image-20210903155051530.png" alt="image-20210903155051530"></p>
+<p>按照规定，实现MUST拒绝所有非字母表中的字符，当然也有特殊情况进行忽略。上面我们已经测了<code>\r\n</code>这种特殊的回车换行控制符.</p>
+<p>接着测试<code>dG~-VzdA==</code></p>
+<p>结果</p>
+<ol>
+<li>php: test</li>
+<li>python3: test</li>
+<li>go: 报错</li>
+<li>java1: 报错</li>
+<li>java2: 非test</li>
+</ol>
+<p>对于go/java1/java2来说是符合预期的，但是python和php即使遇到非字母表字符，就会直接忽略，这会像rfc说的那样，夹带一些危险字符，或用来绕过waf。</p>
+<p>这种绕过waf的方式与上面是相似的，只要把<code>\n</code>换成非字母表字符即可。</p>
+<p><img src="image-20210908170904392.png" alt="image-20210908170904392"></p>
+<h3 id="Padding-不足"><a href="#Padding-不足" class="headerlink" title="Padding 不足"></a>Padding 不足</h3><p><img src="image-20210903155905246.png" alt="image-20210903155905246"></p>
+<p>这里rfc并没有规定解码器在遇到Padding不足的时候应该怎么解码，但是规定了，实现必须在末尾加上适当的填充字符编码数据。是不是就可以理解成，在需要Padding时，这个Padding是必须增加的，那么解码器在解码时遇到Padding不足的时候应该认定为不正确的base64编码数据。当然并不是所有解码器都是这么实现，因为我们见过很多不写Padding的情况。</p>
+<p>测试<code>dGVzdA</code></p>
+<p>结果为</p>
+<ol>
+<li>php: test</li>
+<li>python: 报错</li>
+<li>go: 报错</li>
+<li>java1: test</li>
+<li>java2: 非test</li>
+</ol>
+<p>可以看到php依旧坚挺，还是能够解码成功，但是java1也能解码成功了，python虽然支持非字母表字符，却不支持Padding缺少</p>
+<p>这种方式绕过，只能适合支持base64解码的waf，并且解码器并不支持padding不足，但是后端支持</p>
+<p><img src="image-20210908180848539.png" alt="image-20210908180848539"></p>
+<h3 id="Padding过多"><a href="#Padding过多" class="headerlink" title="Padding过多"></a>Padding过多</h3><p><img src="image-20210903161030946.png" alt="image-20210903161030946"></p>
+<p>可以看到，如果忽略了非字母表字符，那么多余的Padding字符也将会被忽略。</p>
+<p>接着测试<code>dGVzdA===</code></p>
+<ol>
+<li>php: test</li>
+<li>python: test</li>
+<li>go: 报错</li>
+<li>java1: 报错</li>
+<li>java2: test</li>
+</ol>
+<p>可以看到，结果与第二部分非字母表字符部分是基本一致的，这是符合rfc的，但是java2却出现了不同，其他情况，虽然没有报错，但是都没有正确解码出test字符串，但是Padding过多情况下，竟然解码出了test</p>
+<p>这种绕过和上面padding不足类似，绕过得场景也是一样得，只需要增加padding即可</p>
+<p><img src="image-20210908181336136.png" alt="image-20210908181336136"></p>
+<h3 id="Padding后增加编码数据"><a href="#Padding后增加编码数据" class="headerlink" title="Padding后增加编码数据"></a>Padding后增加编码数据</h3><p>padding之所有叫padding，就是因为在末尾时不够编码，所以进行的填充，也就是说Padding后不应该含有正确格式base64编码数据。</p>
+<p>接着测试<code>dGVzdA==dGVzdA==</code></p>
+<ol>
+<li>php: testFW7@</li>
+<li>python: test</li>
+<li>go: 报错</li>
+<li>java1: 报错</li>
+<li>java2: testtest</li>
+</ol>
+<p>很有趣的是，java2把重复的test都解码成功了，而python遇到padding直接后面不要了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前来看，go是遇到不规范的格式，直接报错，但是对于回车换行可以忽略，java1类似于go，但是有个补全padding的功能，python和php类似都会忽略非字母，也会忽略多余的padding，但是python不具有补全padding的功能，而java2从解码结果来看，就是没有任何容错，就是有什么解码什么，padding不够按照padding不够的解析，padding后有数据就继续解析。这里有个问题，就是php在最后一种情况下，既没有像python那样忽略padding后数据，也没有像java2那样解析出正常数据，有兴趣的同志可以看下具体实现。</p>
+<p>可以看到不同的解码器在实现上差距非常大，所以如果waf在实现上和后端存在差异，那么我们就可以使用这种不规范的数据进行waf的绕过，或者危险数据的注入。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://datatracker.ietf.org/doc/html/rfc4648" target="_blank" rel="noopener">https://datatracker.ietf.org/doc/html/rfc4648</a></p>
+<p><a href="https://t.zsxq.com/uvFqNFy" target="_blank" rel="noopener">https://t.zsxq.com/uvFqNFy</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTPRFC/" rel="tag"># HTTPRFC</a>
+          
+            <a href="/tags/WAF/" rel="tag"># WAF</a>
+          
+            <a href="/tags/Base64/" rel="tag"># Base64</a>
+          
+            <a href="/tags/RFC/" rel="tag"># RFC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/08/17/Eclipse-Jetty-WEB-INF敏感信息泄露漏洞分析（CVE-2021-28164-CVE-2021-34429）/" rel="next" title="Eclipse Jetty WEB-INF敏感信息泄露漏洞分析（CVE-2021-28164/CVE-2021-34429）">
+                <i class="fa fa-chevron-left"></i> Eclipse Jetty WEB-INF敏感信息泄露漏洞分析（CVE-2021-28164/CVE-2021-34429）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/20/HAProxy请求走私漏洞（CVE-2021-40346）分析/" rel="prev" title="HAProxy请求走私漏洞（CVE-2021-40346）分析">
+                HAProxy请求走私漏洞（CVE-2021-40346）分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">donky16</p>
+              <p class="site-description motion-element" itemprop="description">质性自然，非矫历所得</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Base64编码"><span class="nav-number">1.</span> <span class="nav-text">Base64编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAF拦截机制"><span class="nav-number">2.</span> <span class="nav-text">WAF拦截机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解码器"><span class="nav-number">3.</span> <span class="nav-text">解码器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解析方式"><span class="nav-number">4.</span> <span class="nav-text">解析方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#换行符"><span class="nav-number">4.1.</span> <span class="nav-text">换行符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非字母表字符（除-r-n）"><span class="nav-number">4.2.</span> <span class="nav-text">非字母表字符（除\r\n）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Padding-不足"><span class="nav-number">4.3.</span> <span class="nav-text">Padding 不足</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Padding过多"><span class="nav-number">4.4.</span> <span class="nav-text">Padding过多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Padding后增加编码数据"><span class="nav-number">4.5.</span> <span class="nav-text">Padding后增加编码数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">donky16</span>
+
+  
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans,en,default">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="HTTP,走私,BlackHat," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="文章首发于安全客，链接https://www.anquanke.com/post/id/249446">
+<meta name="keywords" content="HTTP,走私,BlackHat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP&#x2F;2降级走私攻击">
+<meta property="og:url" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/index.html">
+<meta property="og:site_name" content="donky16">
+<meta property="og:description" content="文章首发于安全客，链接https://www.anquanke.com/post/id/249446">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805112522080.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805112828547.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805114016918.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805142517426.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805143315473.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805144411830.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805145526151.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805150612829.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805152843752.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805153659958.png">
+<meta property="og:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805151725352.png">
+<meta property="og:updated_time" content="2022-03-28T12:02:41.563Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HTTP&#x2F;2降级走私攻击">
+<meta name="twitter:description" content="文章首发于安全客，链接https://www.anquanke.com/post/id/249446">
+<meta name="twitter:image" content="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/image-20210805112522080.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/"/>
+
+
+
+
+
+  <title>HTTP/2降级走私攻击 | donky16</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">donky16</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://donky.cn/2021/08/06/HTTP-2降级走私攻击/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="donky16">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="donky16">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HTTP/2降级走私攻击</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-06T19:46:05+08:00">
+                2021-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/协议安全/" itemprop="url" rel="index">
+                    <span itemprop="name">协议安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>文章首发于安全客，链接<a href="https://www.anquanke.com/post/id/249446" target="_blank" rel="noopener">https://www.anquanke.com/post/id/249446</a> <a id="more"></a></p>
+<p>一直关注的Black Hat USA 2021议题HTTP/2: The Sequel is Always Worse，最近终于看到相关文档，这里记录下学习到的内容。</p>
+<h2 id="关于HTTP-2"><a href="#关于HTTP-2" class="headerlink" title="关于HTTP/2"></a>关于HTTP/2</h2><p>HTTP/2标准于2015年5月以RFC 7540正式发表，基于SPDY协议。根据<a href="https://w3techs.com/" target="_blank" rel="noopener">W3Techs</a>的数据，截至2019年6月，全球有36.5%的网站支持了HTTP/2。</p>
+<h3 id="新特性"><a href="#新特性" class="headerlink" title="新特性"></a>新特性</h3><p>HTTP/2协议相对于HTTP/1.1在性能上有了很大的提升，主要具有以下新特性</p>
+<ol>
+<li>二进制分帧</li>
+<li>请求与响应复用</li>
+<li>服务端推送</li>
+<li>头部压缩</li>
+</ol>
+<h3 id="攻击点"><a href="#攻击点" class="headerlink" title="攻击点"></a>攻击点</h3><p>对于这些新特性，都有相对应的攻击点。目前大多数CDN厂商都支持HTTP/2，但是很多后端服务并不支持，所以CDN需要做一个HTTP/2到HTTP/1.x的转换，对于头部压缩特性，需要进行解压，所以导致带宽放大攻击，具体可以看<a href="https://www.anquanke.com/post/id/224321" target="_blank" rel="noopener">HTTP协议攻击</a>。本文将主要介绍HTTP/2降级导致的走私攻击，对于其他文章中编写的隧道和其他攻击方式，有兴趣的可以查看引用获取资料。</p>
+<h2 id="HTTP-2降级走私"><a href="#HTTP-2降级走私" class="headerlink" title="HTTP/2降级走私"></a>HTTP/2降级走私</h2><h3 id="产生原因"><a href="#产生原因" class="headerlink" title="产生原因"></a>产生原因</h3><p>在 HTTP/1 中，每个消息主体的长度通过内容长度（Content-Length）或传输编码（Transfor-Encoding）header表示。</p>
+<p>在 HTTP/2 中，这些header是多余的，因为使用二进制流进行传输，没有文本的概念，消息的内容都是由数据帧（Data Frame）进行传递，每个帧中的内容的长度，是有Length进行记录的。</p>
+<p><img src="image-20210805112522080.png" alt=""></p>
+<p>看似走私并不会在HTTP/2协议中发生（我之前也是这么想的），但是在HTTP/2转换为HTTP/1.x的降级过程中，就会出现新的问题。</p>
+<p><img src="image-20210805112828547.png" alt="image-20210805112828547"></p>
+<p>前端服务使用HTTP/2协议，使用协议中内在的message的Length，而后端服务却使用HTTP/1.1协议，可以接收到含有CL或者TE的请求，此时就会导致出现HTTP/2协议的走私可能。</p>
+<h3 id="案例研究"><a href="#案例研究" class="headerlink" title="案例研究"></a>案例研究</h3><h4 id="H2-CL"><a href="#H2-CL" class="headerlink" title="H2.CL"></a>H2.CL</h4><p>以Netflix为例，发送此http/2数据</p>
+<p><img src="image-20210805114016918.png" alt="image-20210805114016918"> </p>
+<p>在转换成http/1.1后，内容成为了</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/n</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: www.netflix.com</span><br><span class="line"><span class="attribute">Content-Length</span>: 4</span><br><span class="line"></span><br><span class="line">abcdGET /n HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: 02.rs?x.netflix.com</span><br><span class="line"><span class="attribute">Foo</span>: bar</span><br></pre></td></tr></table></figure>
+<p>对于后端服务来说，这直接导致了走私漏洞，相关漏洞信息可以查看<a href="https://github.com/netty/netty/security/advisories/GHSA-wm47-8v5p-wjpj" target="_blank" rel="noopener">CVE-2021-21295</a>。那么对于完全不需要Content-Length来进行标识请求体长度的HTTP/2协议来说，为什么会出现这个问题呢？</p>
+<p><img src="image-20210805142517426.png" alt="image-20210805142517426"> </p>
+<p>RFC7540编写的十分清晰，HTTP/2请求和响应可以包括Content-Length头，但是对于Content-Length的值和DATA frame的长度不一致的情况，应该视为格式错误。而且第三段明确规定，处理 HTTP 请求或响应的中介（即任何<br>中介不充当隧道）不得转发格式错误的请求或响应。</p>
+<h4 id="H2-TE"><a href="#H2-TE" class="headerlink" title="H2.TE"></a>H2.TE</h4><p>此漏洞发生在AWS Application Load Balance中</p>
+<p>发送数据包为</p>
+<p><img src="image-20210805143315473.png" alt="image-20210805143315473"> </p>
+<p>后端服务接受到数据包为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/identity/XUI/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: id.b2b.oath.com</span><br><span class="line"><span class="attribute">Content-Length</span>: 68</span><br><span class="line"><span class="attribute">Transfer-Encoding</span>: chunked</span><br><span class="line"></span><br><span class="line"><span class="attribute">0</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line">GET /oops HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: psres.net</span><br><span class="line"><span class="attribute">Content-Length</span>: 10</span><br><span class="line"></span><br><span class="line">x=</span><br></pre></td></tr></table></figure>
+<p>这种走私类型就类似于HTTP/1.1中的CL-TE。</p>
+<p>这种漏洞的产生，也是中间件对于Transfor-Encoding的处理出现了错误导致，对于HTTP/2来说，一个TCP连接就可以完成一个客户端和服务端之间持续的数据的传送，所以对于Connection系列字段都是不需要的，所有请求与响应的标识是通过Stream ID来进行的。</p>
+<p><img src="image-20210805144411830.png" alt="image-20210805144411830"> </p>
+<p>RFC7540规定，端点不得生成包含特定于连接的标头的 HTTP/2 消息<br>领域；任何包含特定连接头的消息必须被视为格式错误，唯一的例外是 TE 头，可以存在于 HTTP/2 请求中，但其不得包含任何“trailers”以外的取值。当然如果中间件需要处理从HTTP/1.x到HTTP/2的转换，是应该删除相关连接头，Keep-Alive, Proxy-Connection, Transfer-Encoding, and Upgrade，即使他们没有被标识为连接头字段。</p>
+<h4 id="H2-TE-通过http-header值注入"><a href="#H2-TE-通过http-header值注入" class="headerlink" title="H2.TE 通过http header值注入"></a>H2.TE 通过http header值注入</h4><p>即使中间件正确处理了Transfor-Encoding头，将之删除或者直接返回错误，但是依旧可以参照http/1.1的header注入，来进行走私。</p>
+<p><img src="image-20210805145526151.png" alt="image-20210805145526151"> </p>
+<p>在中间件验证HTTP/2数据包头部是否含有Transfor-Encoding的情况下，直接不把Transfor-Encoding作为一个完整的header字段，而是通过<code>\r\n</code>注入在header中的字段值中，这样就绕过了上文RFC规定的验证。</p>
+<p>如果通过转换，其HTTP/1.1请求为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">POST / HTTP/1.1\r\n</span><br><span class="line"><span class="attribute">Host</span>: start.mozilla.org\r\n</span><br><span class="line"><span class="attribute">Foo</span>: b\r\n</span><br><span class="line"><span class="attribute">Transfer-Encoding</span>: chunked\r\n</span><br><span class="line"><span class="attribute">Content-Length</span>: 77\r\n</span><br><span class="line">\r\n</span><br><span class="line"><span class="attribute">0\r\n</span></span><br><span class="line"><span class="attribute">\r\n</span></span><br><span class="line">GET / HTTP/1.1\r\n</span><br><span class="line"><span class="attribute">Host</span>: evil-netlify-domain\r\n</span><br><span class="line"><span class="attribute">Content-Length</span>: 5\r\n</span><br><span class="line">\r\n</span><br><span class="line">x=</span><br></pre></td></tr></table></figure>
+<p>这样依旧可以造成走私。</p>
+<p>当然在HTTP/2中是二进制流协议，并不像HTTP/1.x需要<code>\r\n</code>来进行每一行的标识。然而当把这些可以在HTTP/1.x中作为标识的字符用在HTTP/2中，在转换过程中，就会让其发挥作用，导致安全问题。RFC也考虑到此问题</p>
+<p><img src="image-20210805150612829.png" alt="image-20210805150612829"> </p>
+<p>如果这些字符如CRLF，0x0，被逐一解析，可能被攻击者利用，所以规定任何请求或响应包含头字段值中不允许的字符必须被视为格式错误，当然很明显并不是多有中间件都遵守此规定。</p>
+<h4 id="H2-TE-通过header-name注入"><a href="#H2-TE-通过header-name注入" class="headerlink" title="H2.TE 通过header name注入"></a>H2.TE 通过header name注入</h4><p>上文提到，通过在header字段中，添加<code>\r\n</code>来进行Transfor-Encoding的注入，从而绕过HTTP/2协议中不允许Transfor-Encoding字段的规定，那么可以在header name中也实现注入，这种情况就需要另外一个危险字符<code>:</code></p>
+<p><img src="image-20210805152843752.png" alt="image-20210805152843752"> </p>
+<p>转换HTTP/1.1后，数据包为</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">foo</span>: bar</span><br><span class="line"><span class="attribute">transfer-encoding</span>: chunked</span><br><span class="line"><span class="attribute">host</span>: ecosystem.atlassian.net</span><br></pre></td></tr></table></figure>
+<p>依旧可以使用Transfor-Encoding来进行走私。</p>
+<h4 id="H2-TE-通过请求行注入"><a href="#H2-TE-通过请求行注入" class="headerlink" title="H2.TE 通过请求行注入"></a>H2.TE 通过请求行注入</h4><p>如果中间件只是修复了普通Header中关于危险字符的过滤，那么对于foo或者Transfor-Encoding字段来说，并不能使用，所以作者使用伪标头来进行注入，在HTTP/2中，所有标头字段名称均为小写，请求行拆分成各个<code>:method</code>、<code>:scheme</code>、<code>:authority</code> 和 <code>:path</code> 伪标头字段，以<code>:method</code>为例</p>
+<p><img src="image-20210805153659958.png" alt="image-20210805153659958"> </p>
+<p>将走私请求直接注入到method中</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">transfer-encoding</span>: chunked</span><br><span class="line"><span class="attribute">x</span>: x /ignored HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: eco.atlassian.net</span><br></pre></td></tr></table></figure>
+<p>所以中间件对于header中危险字符的过滤，应该把所有字段都进行处理。</p>
+<h4 id="H2-X-通过请求拆分"><a href="#H2-X-通过请求拆分" class="headerlink" title="H2.X 通过请求拆分"></a>H2.X 通过请求拆分</h4><p>既然可以注入<code>\r\n</code>，作者又直接将整个走私请求注入到header处，以达成攻击。</p>
+<p><img src="image-20210805151725352.png" alt="image-20210805151725352"> </p>
+<p>这种方式，更加简单粗暴，只要中间件在转换过程中，逐一识别危险字符<code>\r\n</code>，那么转换成的HTTP/1.1数据就为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Foo</span>: bar</span><br><span class="line"><span class="attribute">Host</span>: ecosystem.atlassian.net</span><br><span class="line"><span class="keyword">GET</span> <span class="string">/robots.txt</span> HTTP/1.1</span><br><span class="line"><span class="attribute">X-Ignore</span>: x</span><br><span class="line"><span class="attribute">Host</span>: ecosystem.atlassian.net\r\n</span><br><span class="line">\r\n</span><br></pre></td></tr></table></figure>
+<p>这种走私，不需要使用Transfor-Encoding编码，也不需要body和POST方法。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>随着HTTP/2的普及，更多中间件开始支持HTTP/2，来提高网站的性能，无论是CDN或者WAF，未来可能都会使用HTTP/2，但是后端服务只支持HTTP/1.x的情况也会很常见，所以中间件必须将HTTP/2转换为HTTP/1.x，才能与后端服务通信，如果在实现上没有考虑很多安全问题，这种协议的降级造成的危害是致命的，无论是带宽放大，还是走私，或者缓存投毒。业务层可以尽量避免协议的降级，如果无法避免，应该在实现上，尽量按照RFC规定来进行实现，防止出现严重的安全问题。</p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a href="https://www.blackhat.com/us-21/briefings/schedule/#http2-the-sequel-is-always-worse-22668" target="_blank" rel="noopener">https://www.blackhat.com/us-21/briefings/schedule/#http2-the-sequel-is-always-worse-22668</a></p>
+<p><a href="https://i.blackhat.com/USA21/Wednesday-Handouts/us-21-Kettle-HTTP-The-Sequel-Is-Always-Worse.pdf" target="_blank" rel="noopener">https://i.blackhat.com/USA21/Wednesday-Handouts/us-21-Kettle-HTTP-The-Sequel-Is-Always-Worse.pdf</a></p>
+<p><a href="https://i.blackhat.com/USA21/Wednesday-Handouts/us-21-Kettle-HTTP2-The-Sequel-Is-Always-Worse-wp.pdf" target="_blank" rel="noopener">https://i.blackhat.com/USA21/Wednesday-Handouts/us-21-Kettle-HTTP2-The-Sequel-Is-Always-Worse-wp.pdf</a></p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc7540" target="_blank" rel="noopener">https://datatracker.ietf.org/doc/html/rfc7540</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          
+            <a href="/tags/走私/" rel="tag"># 走私</a>
+          
+            <a href="/tags/BlackHat/" rel="tag"># BlackHat</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/07/22/Apache-Tomcat-HTTP请求走私-CVE-2021-33037-漏洞分析/" rel="next" title="Apache Tomcat HTTP请求走私(CVE-2021-33037)漏洞分析">
+                <i class="fa fa-chevron-left"></i> Apache Tomcat HTTP请求走私(CVE-2021-33037)漏洞分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/08/17/Eclipse-Jetty-WEB-INF敏感信息泄露漏洞分析（CVE-2021-28164-CVE-2021-34429）/" rel="prev" title="Eclipse Jetty WEB-INF敏感信息泄露漏洞分析（CVE-2021-28164/CVE-2021-34429）">
+                Eclipse Jetty WEB-INF敏感信息泄露漏洞分析（CVE-2021-28164/CVE-2021-34429） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">donky16</p>
+              <p class="site-description motion-element" itemprop="description">质性自然，非矫历所得</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于HTTP-2"><span class="nav-number">1.</span> <span class="nav-text">关于HTTP/2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新特性"><span class="nav-number">1.1.</span> <span class="nav-text">新特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#攻击点"><span class="nav-number">1.2.</span> <span class="nav-text">攻击点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-2降级走私"><span class="nav-number">2.</span> <span class="nav-text">HTTP/2降级走私</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#产生原因"><span class="nav-number">2.1.</span> <span class="nav-text">产生原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#案例研究"><span class="nav-number">2.2.</span> <span class="nav-text">案例研究</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#H2-CL"><span class="nav-number">2.2.1.</span> <span class="nav-text">H2.CL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H2-TE"><span class="nav-number">2.2.2.</span> <span class="nav-text">H2.TE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H2-TE-通过http-header值注入"><span class="nav-number">2.2.3.</span> <span class="nav-text">H2.TE 通过http header值注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H2-TE-通过header-name注入"><span class="nav-number">2.2.4.</span> <span class="nav-text">H2.TE 通过header name注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H2-TE-通过请求行注入"><span class="nav-number">2.2.5.</span> <span class="nav-text">H2.TE 通过请求行注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#H2-X-通过请求拆分"><span class="nav-number">2.2.6.</span> <span class="nav-text">H2.X 通过请求拆分</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">donky16</span>
+
+  
+</div>
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

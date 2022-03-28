@@ -89,20 +89,20 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210603121958750.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210603143948655.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719155312757.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719161434585.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719162403980.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719155312757.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719161434585.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719162403980.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719170355478.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210720180650475.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210720180727980.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719173328574.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719174055580.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719181809958.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719181747271.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720173625351.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720173828868.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720182136187.png">
-<meta property="og:image" content="c:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720182211229.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719173328574.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719174055580.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719181809958.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210719181747271.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210720173625351.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210720173828868.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210720182136187.png">
+<meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210720182211229.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210827143140621.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210827154633740.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210827154937977.png">
@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210827161859982.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210827163252780.png">
 <meta property="og:image" content="https://donky.cn/2021/07/13/如何打造好用的ModSecurity系列/image-20210827163702220.png">
-<meta property="og:updated_time" content="2022-03-28T11:43:58.957Z">
+<meta property="og:updated_time" content="2022-03-28T12:22:08.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何打造好用的ModSecurity系列">
 <meta name="twitter:description" content="文章首发于奇安信攻防社区，链接https://forum.butian.net/share/258，原文有三部分，此处为完整版">
@@ -468,15 +468,15 @@
 <p>并设置了<code>REQBODY_ERROR</code>参数用于在解析request body过程中出现错误的记录，对于multipart格式，专门设置了<code>MULTIPART_STRICT_ERROR</code>参数，并根据错误类型进行严格的记录</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PE %&#123;REQBODY_PROCESSOR_ERROR&#125;, \</span><br><span class="line">BQ %&#123;MULTIPART_BOUNDARY_QUOTED&#125;, \</span><br><span class="line">BW %&#123;MULTIPART_BOUNDARY_WHITESPACE&#125;, \</span><br><span class="line">DB %&#123;MULTIPART_DATA_BEFORE&#125;, \</span><br><span class="line">DA %&#123;MULTIPART_DATA_AFTER&#125;, \</span><br><span class="line">HF %&#123;MULTIPART_HEADER_FOLDING&#125;, \</span><br><span class="line">LF %&#123;MULTIPART_LF_LINE&#125;, \</span><br><span class="line">SM %&#123;MULTIPART_MISSING_SEMICOLON&#125;, \</span><br><span class="line">IQ %&#123;MULTIPART_INVALID_QUOTING&#125;, \</span><br><span class="line">IP %&#123;MULTIPART_INVALID_PART&#125;, \</span><br><span class="line">IH %&#123;MULTIPART_INVALID_HEADER_FOLDING&#125;, \</span><br><span class="line">FL %&#123;MULTIPART_FILE_LIMIT_EXCEEDED&#125;</span><br></pre></td></tr></table></figure>
 <p>modsecurity对于multipart解析进行了严格的格式校验，也就是说一般的绕过waf的方式，可能会因为格式校验不通过而失败，具体在multipart解析层面对waf的绕过可以参考<a href="https://www.anquanke.com/post/id/241265" target="_blank" rel="noopener">从RFC看如何绕过waf文件上传表单</a>，简单测试一下在boundary处的绕过waf的小trick</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719155312757.png" alt="image-20210719155312757"></p>
+<p><img src="image-20210719155312757.png" alt="image-20210719155312757"></p>
 <p>直接400了，查看nginx日志能看到详细信息</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719161434585.png" alt="image-20210719161434585"></p>
+<p><img src="image-20210719161434585.png" alt="image-20210719161434585"></p>
 <p><code>BQ MULTIPART_BOUNDARY_QUOTED</code>为1，格式校验失败，当然这种严格的格式校验有误报的可能性，但也相对来说增加了绕过waf的难度。</p>
 </li>
 <li><p>SecResponseBodyAccess：是否允许waf检测响应包response body</p>
 </li>
 <li><p>SecDebugLogLevel：调试日志级别，不建议设置太高，增加性能消耗</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719162403980.png" alt="image-20210719162403980"> </p>
+<p><img src="image-20210719162403980.png" alt="image-20210719162403980"> </p>
 </li>
 <li><p>SecAuditEngine/SecAuditLogRelevantStatus 仅为状态代码与提供的正则表达式匹配的事务配置审计日志记录。默认将记录所有 5xx 和 4xx 级别的状态代码，404 除外。</p>
 </li>
@@ -516,9 +516,9 @@
 <li><p>Self-contained mode：自主机制</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SecDefaultAction &quot;phase:1,log,auditlog,deny,status:403&quot;</span><br><span class="line">SecDefaultAction &quot;phase:2,log,auditlog,deny,status:403&quot;</span><br></pre></td></tr></table></figure>
 <p>这种机制是非常传统的简单的方式，只要命中其中一条规则，就直接进行拦截，返回403，也可以设置其他动作，各规则之间没有任何联系，当然可以通过规则链的写法进行弥补规则之间的联系，这种优点明显，学习和使用难度很小，理解简单，并且在性能上很优秀，命中规则直接拦截，不需要后续的处理。但是对于目前庞大的规则体系里，使用这种模式肯定是要删除掉大量规则的，比如一些根据rfc进行校验的规则，简单举个例子，将模式设置为自主模式，并且直接403拦截</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719173328574.png" alt="image-20210719173328574"></p>
+<p><img src="image-20210719173328574.png" alt="image-20210719173328574"></p>
 <p>此请求会被直接403拦截，原因不过是请求得Host是一个ip地址而不是一个域名！所以对于一些本来只需要警告或者提醒的规则，使用自主模式，会造成误报，并且很多规则没法使用。</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719174055580.png" alt="image-20210719174055580"></p>
+<p><img src="image-20210719174055580.png" alt="image-20210719174055580"></p>
 </li>
 <li><p>Anomaly Scoring mode：评分机制，默认机制</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SecDefaultAction &quot;phase:1,log,auditlog,pass&quot;</span><br><span class="line">SecDefaultAction &quot;phase:2,log,auditlog,pass&quot;</span><br></pre></td></tr></table></figure>
@@ -529,9 +529,9 @@
 <h5 id="全局级别分类（severity）："><a href="#全局级别分类（severity）：" class="headerlink" title="全局级别分类（severity）："></a>全局级别分类（severity）：</h5><p>将所有规则分为四类，分别为critical_anomaly_score/error_anomaly_score/warning_anomaly_score/notice_anomaly_score，对应严重，错误，警告，提醒四类，权重由高到低，默认其权重分数在crs-setup.conf中配置，分数对应为5/4/3/2</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">SecAction \</span><br><span class="line"> <span class="string">"id:900100,\</span></span><br><span class="line"><span class="string">  phase:1,\</span></span><br><span class="line"><span class="string">  nolog,\</span></span><br><span class="line"><span class="string">  pass,\</span></span><br><span class="line"><span class="string">  t:none,\</span></span><br><span class="line"><span class="string">  setvar:tx.critical_anomaly_score=5,\</span></span><br><span class="line"><span class="string">  setvar:tx.error_anomaly_score=4,\</span></span><br><span class="line"><span class="string">  setvar:tx.warning_anomaly_score=3,\</span></span><br><span class="line"><span class="string">  setvar:tx.notice_anomaly_score=2"</span></span><br></pre></td></tr></table></figure>
 <p>将modsecurity设置为评分机制，测试一下评分机制效果</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719181809958.png" alt="image-20210719181809958"></p>
+<p><img src="image-20210719181809958.png" alt="image-20210719181809958"></p>
 <p>此请求和上面类似，并且设置Accept为空，用来积累权重分，我们看下详细日志</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210719181747271.png" alt="image-20210719181747271"></p>
+<p><img src="image-20210719181747271.png" alt="image-20210719181747271"></p>
 <p>很明显Accept为空是notice，权重为2，Host为ip地址权重为3，总分在<code>949-BLOCKING-EVALUATION</code>规则中被命中，因为总分为5，判断为critical严重级别直接进行拦截。</p>
 <p>继续查看<code>949-BLOCKING-EVALUATION</code>d中的949110规则</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">SecRule TX:ANOMALY_SCORE "@ge %&#123;tx.inbound_anomaly_score_threshold&#125;" \</span><br><span class="line">    <span class="string">"id:949110,\</span></span><br><span class="line"><span class="string">    phase:2,\</span></span><br><span class="line"><span class="string">    deny,\</span></span><br><span class="line"><span class="string">    t:none,\</span></span><br><span class="line"><span class="string">    msg:'Inbound Anomaly Score Exceeded (Total Score: %&#123;TX.ANOMALY_SCORE&#125;)',\</span></span><br><span class="line"><span class="string">    tag:'application-multi',\</span></span><br><span class="line"><span class="string">    tag:'language-multi',\</span></span><br><span class="line"><span class="string">    tag:'platform-multi',\</span></span><br><span class="line"><span class="string">    tag:'attack-generic',\</span></span><br><span class="line"><span class="string">    ver:'OWASP_CRS/3.4.0-dev',\</span></span><br><span class="line"><span class="string">    severity:'CRITICAL',\</span></span><br><span class="line"><span class="string">    setvar:'tx.inbound_anomaly_score=%&#123;tx.anomaly_score&#125;'"</span></span><br></pre></td></tr></table></figure>
@@ -541,14 +541,14 @@
 <h5 id="漏洞类型分类："><a href="#漏洞类型分类：" class="headerlink" title="漏洞类型分类："></a>漏洞类型分类：</h5><p>通过规则防护漏洞类型来进行分类，每一种漏洞类型的全部规则，都共享一个其相对应的权重分变量，如xss类型的规则都共享<code>tx.xss_score</code>变量，命中一个xss规则，<code>tx.xss_score</code>就会相应增加，增加的权重分数由此规则的级别而定也就是上文提到的全局规则的类型，严重，错误，警告，提醒四类</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">SecRule REQUEST_COOKIES|!REQUEST_COOKIES:/__utm/|REQUEST_COOKIES_NAMES|ARGS_NAMES|ARGS|XML:/* "@pm document.cookie document.write .parentnode .innerhtml window.location -moz-binding &lt;!-- &lt;![cdata[" \</span><br><span class="line">    <span class="string">"id:941180,\</span></span><br><span class="line"><span class="string">    phase:2,\</span></span><br><span class="line"><span class="string">    block,\</span></span><br><span class="line"><span class="string">    capture,\</span></span><br><span class="line"><span class="string">    t:none,t:utf8toUnicode,t:urlDecodeUni,t:htmlEntityDecode,t:jsDecode,t:cssDecode,t:removeNulls,\</span></span><br><span class="line"><span class="string">    msg:'Node-Validator Blacklist Keywords',\</span></span><br><span class="line"><span class="string">    logdata:'Matched Data: %&#123;TX.0&#125; found within %&#123;MATCHED_VAR_NAME&#125;: %&#123;MATCHED_VAR&#125;',\</span></span><br><span class="line"><span class="string">    tag:'application-multi',\</span></span><br><span class="line"><span class="string">    tag:'language-multi',\</span></span><br><span class="line"><span class="string">    tag:'platform-multi',\</span></span><br><span class="line"><span class="string">    tag:'attack-xss',\</span></span><br><span class="line"><span class="string">    tag:'paranoia-level/1',\</span></span><br><span class="line"><span class="string">    tag:'OWASP_CRS',\</span></span><br><span class="line"><span class="string">    tag:'capec/1000/152/242',\</span></span><br><span class="line"><span class="string">    ctl:auditLogParts=+E,\</span></span><br><span class="line"><span class="string">    ver:'OWASP_CRS/3.4.0-dev',\</span></span><br><span class="line"><span class="string">    severity:'CRITICAL',\</span></span><br><span class="line"><span class="string">    setvar:'tx.xss_score=+%&#123;tx.critical_anomaly_score&#125;',\</span></span><br><span class="line"><span class="string">    setvar:'tx.anomaly_score_pl1=+%&#123;tx.critical_anomaly_score&#125;'"</span></span><br></pre></td></tr></table></figure>
 <p>上面这个规则就是，命中后，xss_score增加critical_anomaly_score。简单测试一个利用多种漏洞攻击的请求</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720173625351.png" alt="image-20210720173625351"></p>
+<p><img src="image-20210720173625351.png" alt="image-20210720173625351"></p>
 <p>查看日志，可以看到每种漏洞类型的积累分数</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720173828868.png" alt="image-20210720173828868"></p>
+<p><img src="image-20210720173828868.png" alt="image-20210720173828868"></p>
 <h5 id="PL级别分类："><a href="#PL级别分类：" class="headerlink" title="PL级别分类："></a>PL级别分类：</h5><p>上文提到modsecurity对规则进行了分级，为了后续能够分析每种级别的规则在waf上的效果，评分机制对每一个级别的规则，也进行了权重分的计算，每个级别对应的权重分变量为tx.anomaly_score_pl1/2/3/4,上文中的规则<code>setvar:&#39;tx.anomaly_score_pl1=+%{tx.critical_anomaly_score}</code>就是在命中此PL1规则后，anomaly_score_pl1权重分增加此规则的全局分类权重分critical_anomaly_score。</p>
 <p>我们以上文规则分级中的测试为例，modsecurity设置使用PL2，发送会命中PL1、PL2规则的请求</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720182136187.png" alt="image-20210720182136187"></p>
+<p><img src="image-20210720182136187.png" alt="image-20210720182136187"></p>
 <p>查看日志，可以看到PL各级别的总分</p>
-<p><img src="C:/Users/donky16/Desktop/tmp/Modsecurity/image-20210720182211229.png" alt="image-20210720182211229"></p>
+<p><img src="image-20210720182211229.png" alt="image-20210720182211229"></p>
 <p>这种类型的权重分总和，默认情况下并没有设置阈值进行拦截，如果业务需要，可以对每一个权重分总和设置阈值，从而当某一分类规则命中权重到达阈值就直接进行拦截，下面为PL级别分数到达10，进行拦截的规则示例</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">SecRule TX:ANOMALY_SCORE_PL1 "@ge 10" \</span><br><span class="line">    <span class="string">"id:949999,\</span></span><br><span class="line"><span class="string">    phase:2,\</span></span><br><span class="line"><span class="string">    deny,\</span></span><br><span class="line"><span class="string">    t:none,\</span></span><br><span class="line"><span class="string">    msg:'anomaly score pl1 Exceeded (Total Score: %&#123;TX:ANOMALY_SCORE_PL1&#125;)',\</span></span><br><span class="line"><span class="string">    tag:'application-multi',\</span></span><br><span class="line"><span class="string">    tag:'language-multi',\</span></span><br><span class="line"><span class="string">    tag:'platform-multi',\</span></span><br><span class="line"><span class="string">    tag:'attack-generic',\</span></span><br><span class="line"><span class="string">    ver:'OWASP_CRS/3.4.0-dev',\</span></span><br><span class="line"><span class="string">    severity:'CRITICAL'"</span></span><br></pre></td></tr></table></figure>
 </li>
